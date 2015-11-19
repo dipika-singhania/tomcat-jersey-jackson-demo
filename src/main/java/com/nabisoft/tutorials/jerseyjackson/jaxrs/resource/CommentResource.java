@@ -31,11 +31,13 @@ public class CommentResource {
 	  @Consumes(MediaType.APPLICATION_JSON)
 	  @Produces(MediaType.APPLICATION_JSON)
 	  public Comment putComment(Comment commentObj) {
+		  commentObj.getCustInfoObj().setCustNum(commentObj.getId());
 	    return putAndGetResponse(commentObj);
 	  }
 	  
 	  @DELETE
 	  @Produces(MediaType.APPLICATION_JSON)
+	  @Path("{id}")
 	  public Comment deleteComment(@PathParam("id")String pId) {
 	    Comment c = CommentDao.instance.getModel().remove(pId);
 	    if(c==null)
@@ -48,6 +50,7 @@ public class CommentResource {
 	  @Consumes({MediaType.APPLICATION_JSON })
 	  public Comment getCommentPost(Comment comment) {
 		comment.setDate(new Date().toString());
+		comment.setId(comment.getCustInfoObj().getCustNum());
 		CommentDao.instance.getModel().put(comment.getId(), comment);
 	    return comment;
 	  }

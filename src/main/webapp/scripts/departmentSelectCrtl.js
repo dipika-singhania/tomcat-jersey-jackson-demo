@@ -53,6 +53,62 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 		if(status=="close") {
 			angular.forEach($scope.commentsList, function(comment) {
 				if(comment.id == commentId){
+					if(comment.department != $scope.deptSelect)
+					alert("Some error updating deparment has occured");
+					else if(comment.custInfoObj.custName == null) {
+						alert("Custumer name cannot be null");
+					} else if(comment.id.length!=11 ) {
+						alert("Phone number must be 11 digit number");
+						
+					} else if(isNaN(parseFloat(comment.id))) {
+						alert("phone numebr must be only number")
+					} else {
+						comment.disable = true;
+						$http({
+						  method: 'PUT',
+						  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/comment',
+						  data:comment,
+						  header : { 'content-type':'application/json'}
+						}).then(function successCallback(response) {
+							alert("Successfully Updated Customer "+response.data.id);
+						}, function errorCallback(response) {
+							alert("Error occred while updating data to server " + response.header);
+						});
+					}
+				}
+			});
+		}
+	};
+	$scope.onDelete = function(commentId) {
+		angular.forEach($scope.commentsList, function(comment) {
+			if(comment.id == commentId){
+				$http({
+				  method: 'DELETE',
+				  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/comment/'+commentId,
+				  header : { 'content-type':'application/json'}
+				}).then(function successCallback(response) {
+					alert("Successfully Deleted Customer "+response.data.id);
+					$scope.getComments();
+				}, function errorCallback(response) {
+					alert("Error occred while Deleted data to server " + response.header);
+				});
+			}
+		});
+	}
+	$scope.saveComment = function(commentId ) {
+		angular.forEach($scope.commentsList, function(comment) {
+			if(comment.id == commentId){
+				
+				if(comment.department != $scope.deptSelect)
+					alert("Some error updating deparment has occured");
+				else if(comment.custInfoObj.custName == null) {
+					alert("Custumer name cannot be null");
+				} else if(comment.id.length!=11 ) {
+					alert("Phone number must be 11 digit number");
+					
+				} else if(isNaN(parseFloat(comment.id))) {
+					alert("phone numebr must be only number")
+				} else {
 					comment.disable = true;
 					$http({
 					  method: 'PUT',
@@ -65,23 +121,6 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 						alert("Error occred while updating data to server " + response.header);
 					});
 				}
-			});
-		}
-	};
-	$scope.saveComment = function(commentId ) {
-		angular.forEach($scope.commentsList, function(comment) {
-			if(comment.id == commentId){
-				comment.disable = true;
-				$http({
-				  method: 'PUT',
-				  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/comment',
-				  data:comment,
-				  header : { 'content-type':'application/json'}
-				}).then(function successCallback(response) {
-					alert("Successfully Updated Customer "+response.data.id);
-				}, function errorCallback(response) {
-					alert("Error occred while updating data to server " + response.header);
-				});
 			}
 		});
 		
@@ -92,7 +131,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 		} else {
 			$scope.showForm = true;
 			if($scope.newComment==null || $scope.newComment.department!=$scope.deptSelect){
-				$scope.newComment = {department:$scope.deptSelect};
+				$scope.newComment = {department:$scope.deptSelect,status:"new",custInfoObj:{custName:null,custNum:null}};
 			}
 		}
 	};
@@ -116,5 +155,34 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 			  }
 			}
 		});
+	};
+	
+	$scope.validateForm = function() {
+		if($scope.newComment.department != $scope.deptSelect)
+			alert("Some error updating deparment has occured");
+		else if($scope.newComment.custInfoObj.custName == null) {
+			alert("Custumer name cannot be null");
+		} else if($scope.newComment.custInfoObj.custNum.length!=11 ) {
+			alert("Phone number must be 11 digit number");
+			
+		} else if(isNaN(parseFloat($scope.newComment.custInfoObj.custNum))) {
+			alert("phone numebr must be only number")
+		} else if($scope.newComment.createdBy == null)
+			alert("Select createdBy before submit");
+		else {
+			$http({
+			  method: 'POST',
+			  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/comment',
+			  data:$scope.newComment,
+			  header : { 'content-type':'application/json'}
+			}).then(function successCallback(response) {
+				alert("Successfully Updated Customer comments "+response.data.id);
+				$scope.getComments();
+			}, function errorCallback(response) {
+				alert("Error occred while updating data to server " + response.header);
+			});
+			
+		}
+			
 	};
 });

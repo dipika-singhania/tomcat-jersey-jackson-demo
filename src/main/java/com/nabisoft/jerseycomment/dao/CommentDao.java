@@ -1,4 +1,5 @@
 package com.nabisoft.jerseycomment.dao;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public enum CommentDao {
 		    commentObj.setComment("I want new connection");
 		    CustomerInfo co = new CustomerInfo("Dipika",commentObj.getId());
 		    commentObj.setCustInfoObj(co);
+		    commentObj.setDate(new Date().toString());
 		    contentProvider.put(commentObj.getId(), commentObj);
 		    
 		    commentObj = new Comment();
@@ -31,6 +33,7 @@ public enum CommentDao {
 		    commentObj.setCreatedBy("BC");
 		    commentObj.setComment("Didnt get new connection");
 		    co = new CustomerInfo("Awantika",commentObj.getId());
+		    commentObj.setDate(new Date().toString());
 		    commentObj.setCustInfoObj(co);
 		    contentProvider.put(commentObj.getId(), commentObj);
 		    
@@ -42,6 +45,7 @@ public enum CommentDao {
 		    commentObj.setCreatedBy("CD");
 		    commentObj.setComment("Want to modify plan");
 		    co = new CustomerInfo("Kavita",commentObj.getId());
+		    commentObj.setDate(new Date().toString());
 		    commentObj.setCustInfoObj(co);
 		    contentProvider.put(commentObj.getId(), commentObj);
 		    
@@ -53,6 +57,7 @@ public enum CommentDao {
 		    commentObj.setCreatedBy("DE");
 		    commentObj.setComment("Wrong billing shown");
 		    co = new CustomerInfo("Manju",commentObj.getId());
+		    commentObj.setDate(new Date().toString());
 		    commentObj.setCustInfoObj(co);
 		    contentProvider.put(commentObj.getId(), commentObj);
 		    
@@ -64,6 +69,7 @@ public enum CommentDao {
 		    commentObj.setCreatedBy("EF");
 		    commentObj.setComment("Close my connection");
 		    co = new CustomerInfo("Binod",commentObj.getId());
+		    commentObj.setDate(new Date().toString());
 		    commentObj.setCustInfoObj(co);
 		    contentProvider.put(commentObj.getId(), commentObj);
 		    
@@ -72,6 +78,7 @@ public enum CommentDao {
 		    commentObj.setId("9830081310");
 		    commentObj.setStatus("new");
 		    commentObj.setAssignedTo("EF");
+		    commentObj.setDate(new Date().toString());
 		    commentObj.setCreatedBy("DS");
 		    commentObj.setComment("Help me close connection");
 		    co = new CustomerInfo("Uma Devi",commentObj.getId());
