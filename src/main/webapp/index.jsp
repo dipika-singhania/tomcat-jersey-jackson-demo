@@ -13,7 +13,7 @@
 	<body>
 		<div ng-app="myApp" ng-controller="DepartmentSelectCrtl">
 			<div ng-repeat="x in depts">
-				<input type="radio" ng-model="$parent.deptSelect" ng-value="x" ng-click="getComments()"> {{ x }}
+				<input type="radio" ng-model="$parent.deptSelect" ng-value="x" ng-click="getComments()">{{ x }}
 			</div>
 			<p>{{deptSelect}}</p>
 			<div class="table-responsive">
@@ -56,11 +56,11 @@
 			</div>
 			<div>
 				<button class="btn btn-success" ng-click="showNewForm()" ng-show="deptSelect!='noDepartMentSelected'">
-				  <span class="glyphicon glyphicon-user"></span> Create New User
+				  <span class="glyphicon glyphicon-user"></span> Create New User Comment
 				</button>
 				<hr>
 
-				<h3 ng-show="showForm">Create New Comment:</h3>
+				<h3 ng-show="showForm">Create New User Comment:</h3>
 
 				<form class="form-horizontal" ng-show="showForm">
 					<div class="form-group">
