@@ -49,7 +49,7 @@ public class CommentResource {
 	  @Produces({MediaType.APPLICATION_JSON })
 	  @Consumes({MediaType.APPLICATION_JSON })
 	  public Comment getCommentPost(Comment comment) {
-		comment.setDate(new Date().toString());
+		comment.setDate(new Date());
 		comment.setId(comment.getCustInfoObj().getCustNum());
 		CommentDao.instance.getModel().put(comment.getId(), comment);
 	    return comment;

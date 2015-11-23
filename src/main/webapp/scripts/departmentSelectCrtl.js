@@ -50,6 +50,10 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 		});
 		
 	};
+	$scope.convertDate = function(date_epoch) {
+		var date = new Date(date_epoch);
+		return date.getUTCDate() + '/' + (date.getUTCMonth() + 1)+ '/' + date.getUTCFullYear();
+	};
 	$scope.editRowDisable = function(commentId , status) {
 		if(status=="close") {
 			angular.forEach($scope.commentsList, function(comment) {
@@ -180,6 +184,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 			}).then(function successCallback(response) {
 				alert("Successfully Updated Customer comments "+response.data.id);
 				$scope.getComments($scope.deptSelect);
+				$scope.showForm = false;
 			}, function errorCallback(response) {
 				alert("Error occred while updating data to server " + response.header);
 			});

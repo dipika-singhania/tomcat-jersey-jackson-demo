@@ -13,7 +13,7 @@ public class Comment {
 	private String status;
 	private String comment;
 	private CustomerInfo custInfoObj;
-	private String date;
+	private Date date;
 	private String id;
 	private String department;
 	private Boolean disable;
@@ -38,11 +38,11 @@ public class Comment {
 	public void setId ( String pId ) {
 		this.id = pId;
 	}
-	public String getDate() {
+	public Date getDate() {
         return this.date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 	

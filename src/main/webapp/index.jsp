@@ -49,10 +49,6 @@
 											  <label class="col-sm-4 control-label">CustNumber</label>
 											  <div class="col-sm-8"><input type="text" ng-model="newComment.custInfoObj.custNum"/></div>
 											</div>
-											<div class="form-group">
-											  <label class="col-sm-4 control-label">Date</label>
-											  <div class="col-sm-8"><input type="text" ng-model="newComment.date"/></div>
-											</div>
 										</div>												
 									</div>
 									<div class="col-sm-4">
@@ -106,7 +102,8 @@
 												</div>
 												<div class="form-group">
 												  <label class="col-sm-4 control-label">Date</label>
-												  <div class="col-sm-8"><input type="text" ng-model="comment.date" ng-disabled="true"/></div>
+												  <div class="col-sm-8"><input type="text" ng-disabled="true" ng-model="convertDate(comment.date)"/>
+												  </div>
 												</div>
 											</div>												
 										</div>
