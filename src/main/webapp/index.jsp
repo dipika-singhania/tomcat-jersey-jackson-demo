@@ -6,114 +6,158 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Pojo to Json Serialization using Jersey with Jackson for Java REST Services</title>
+        <title>Redmart Ticket Logging Software</title>
+		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/resources/content/styles.css">
         <script src="<%=request.getContextPath() %>/js/jquery-1.11.2.min.js"></script>
    	</head>
 
 	<body>
-		<div ng-app="myApp" ng-controller="DepartmentSelectCrtl" >
-			<p></p>
-			<p></p>
-			<div ng-repeat="x in depts" class="container">
-				<input type="radio" ng-model="$parent.deptSelect" ng-value="x" ng-click="getComments()">{{ x }}
+		<div ng-app="myApp" ng-controller="DepartmentSelectCrtl">
+			<nav class="navbar navbar-inverse">
+				<div class="container-fluid">
+					<div class="navbar-header">
+					  <img src="<%=request.getContextPath() %>/resources/images/logo.png" alt="RedMart"/>
+					</div>
+					<div>
+					  <ul class="nav navbar-nav">
+						<li ng-repeat="x in depts" ng-click="getComments(x)"><a href="#">{{ x }}</a></li>
+					  </ul>
+				  </div>
+				</div>
+			</nav>
+			<div class="container">
+				<div class="col-sm-12 columns"  ng-show="deptSelect!='noDepartMentSelected'">
+					<div class="widthHundred">
+						<div class="panel panel-default widthHundred">
+							<div class="panel-body widthHundred">
+								<div class="row">
+									<div class="col-sm-4">
+										<button class="btn btn-success" ng-click="showNewForm()">
+										  <span class="glyphicon glyphicon-user"></span> Create New User Comment
+										</button>
+									</div>
+								</div>
+								<hr>
+								<div class="row" ng-show="showForm">
+									<div class="col-sm-4">
+										<div class="form-horizontal">
+											<div class="form-group">
+											  <label class="col-sm-4 control-label">CustName</label>
+											  <div class="col-sm-8"><input type="text" ng-model="newComment.custInfoObj.custName"/></div>
+											</div>
+											<div class="form-group">
+											  <label class="col-sm-4 control-label">CustNumber</label>
+											  <div class="col-sm-8"><input type="text" ng-model="newComment.custInfoObj.custNum"/></div>
+											</div>
+											<div class="form-group">
+											  <label class="col-sm-4 control-label">Date</label>
+											  <div class="col-sm-8"><input type="text" ng-model="newComment.date"/></div>
+											</div>
+										</div>												
+									</div>
+									<div class="col-sm-4">
+										<div class="form-horizontal">
+											<div class="form-group">
+											  <label class="col-sm-4 control-label">Comment</label>
+											  <div class="col-sm-8"><textarea ng-model="newComment.comment"></textarea></div>
+											</div>
+											<div class="form-group">
+											  <div class="col-sm-12 text-center">
+												<button class="btn btn-success" ng-show="showForm" ng-click="validateForm()">
+												  <span class="glyphicon glyphicon-save"></span> Save Changes
+												</button>
+											  </div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-horizontal">
+											<div class="form-group">
+											  <label class="col-sm-4 control-label">CreatedBy</label>
+											  <div class="col-sm-8"><select ng-model="newComment.createdBy" ng-options="user for user in userToLogComments"></select></div>
+											</div>
+											<div class="form-group">
+											  <label class="col-sm-4 control-label">Status</label>
+											  <div class="col-sm-8"><select ng-model="newComment.status" ng-options="st for st in statusAllowed"></select></div>
+											</div>
+											<div class="form-group">
+											  <label class="col-sm-4 control-label">AssignedTo</label>
+											  <div class="col-sm-8"><select ng-model="newComment.assignedTo" ng-options="user for user in userToAssignTasks"></select></div>
+											</div>
+										</div>
+									</div>
+								</div>	
+							</div>
+						</div>
+						<div class="allParcels widthHundred" ng-show="deptSelect!='noDepartMentSelected'">
+							<div ng-repeat="comment in commentsList">
+								<div class="panel panel-default widthHundred">
+								  <div class="panel-body border widthHundred">
+									<div class="row">
+										<div class="col-sm-4">
+											<div class="form-horizontal">
+												<div class="form-group">
+												  <label class="col-sm-4 control-label">CustName</label>
+												  <div class="col-sm-8"><input type="text" ng-model="comment.custInfoObj.custName" ng-disabled="comment.disable"/></div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-4 control-label">CustNumber</label>
+												  <div class="col-sm-8"><input type="text" ng-model="comment.id" ng-disabled="comment.disable"/></div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-4 control-label">Date</label>
+												  <div class="col-sm-8"><input type="text" ng-model="comment.date" ng-disabled="true"/></div>
+												</div>
+											</div>												
+										</div>
+										<div class="col-sm-4">
+											<div class="form-horizontal">
+												<div class="form-group">
+												  <label class="col-sm-4 control-label">Comment</label>
+												  <div class="col-sm-8"><textarea ng-model="comment.comment" ng-disabled="comment.disable">{{comment.comment }}</textarea></div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-4 control-label">Edit</label>
+												  <div class="col-sm-8"><button class="btn" ng-click="editUser(comment.id)" ng-disabled="comment.status=='close'">
+												  <span class="glyphicon glyphicon-pencil" data-toggle="tooltip" title="edit"/></button></div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-4 control-label">Save</label>
+												  <div class="col-sm-8"><button class="btn" ng-click="saveComment(comment.id)" ng-disabled="comment.disable" data-toggle="tooltip" title="save">
+													  <span class="glyphicon glyphicon-floppy-disk"/></button></div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-4 control-label">Delete</label>
+												  <div class="col-sm-8"><button class="btn" data-toggle="tooltip" title="delete" ng-click="onDelete(comment.id)">
+													  <span class="glyphicon glyphicon-remove-circle"></button></div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="form-horizontal">
+												<div class="form-group">
+												  <label class="col-sm-4 control-label">CreatedBy</label>
+												  <div class="col-sm-8"><select ng-model="comment.createdBy" ng-options="user for user in userToLogComments"  ng-disabled="comment.disable"></select></div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-4 control-label">Status</label>
+												  <div class="col-sm-8"><select ng-model="comment.status" ng-options="st for st in statusAllowed" ng-disabled="comment.disable" ng-change="editRowDisable(comment.id,comment.status)"></select></div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-4 control-label">AssignedTo</label>
+												  <div class="col-sm-8"><select ng-model="comment.assignedTo" ng-options="user for user in userToAssignTasks"  ng-disabled="comment.disable"></select></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								  </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<p></p>
-			<p></p>
-			<div class="table-responsive">
-			<table class="table table-striped" ng-show="deptSelect!='noDepartMentSelected'">
-			  <thead>
-				<tr>
-				  <th>Edit</th>
-				  <th>Save</th>
-				  <th>Delete</th>
-				  <th>CommentID</th>
-				  <th>CommentDate</th>
-				  <th>CustomerName</th>
-				  <th>comment</th>
-				  <th>CreatedBy</th>
-				  <th>AssignedTo</th>
-				  <th>Status</th>
-				  
-				</tr>
-			  </thead>
-			  <tbody>
-				<tr ng-repeat="comment in commentsList">
-				  <td>
-					<button class="btn" ng-click="editUser(comment.id)" ng-disabled="comment.status=='close'">
-					  <span class="glyphicon glyphicon-pencil" data-toggle="tooltip" title="edit"></button>
-				  </td>
-				  <td>
-					<button class="btn" ng-click="saveComment(comment.id)" ng-disabled="comment.disable" data-toggle="tooltip" title="save">
-					  <span class="glyphicon glyphicon-floppy-disk"></button>
-				  </td>
-				  <td>
-					<button class="btn" data-toggle="tooltip" title="delete" ng-click="onDelete(comment.id)">
-					  <span class="glyphicon glyphicon-remove-circle"></button>
-				  </td>
-				  <td><input type="text" ng-model="comment.id" ng-disabled="comment.disable"/></td>
-				  <td><input type="text" ng-model="comment.date" ng-disabled="true"/></td>
-				  <td><input type="text" ng-model="comment.custInfoObj.custName" ng-disabled="comment.disable"/></td>
-				  <td><textarea ng-model="comment.comment" ng-disabled="comment.disable">{{comment.comment }}</textarea></td>
-				  <td><select ng-model="comment.createdBy" ng-options="user for user in userToLogComments"  ng-disabled="comment.disable"></select></td>
-				  <td><select ng-model="comment.assignedTo" ng-options="user for user in userToAssignTasks"  ng-disabled="comment.disable"></select></td>
-				  <td><select ng-model="comment.status" ng-options="st for st in statusAllowed" ng-disabled="comment.disable" ng-change="editRowDisable(comment.id,comment.status)"></select></td>
-				  
-				</tr>
-			  </tbody>
-			</table>
-			</div>
-			<div>
-				<button class="btn btn-success" ng-click="showNewForm()" ng-show="deptSelect!='noDepartMentSelected'">
-				  <span class="glyphicon glyphicon-user"></span> Create New User Comment
-				</button>
-				<hr>
-
-				<h3 ng-show="showForm">Create New User Comment:</h3>
-
-				<form class="form-horizontal" ng-show="showForm">
-					<div class="form-group">
-					  <label class="col-sm-2 control-label">Name</label>
-					  <div class="col-sm-10">
-						<input type="text" ng-model="newComment.custInfoObj.custName" ng-disabled="!showForm" placeholder="Customer Name">
-					  </div>
-					</div> 
-					<div class="form-group">
-					  <label class="col-sm-2 control-label">Phone Number:</label>
-					  <div class="col-sm-10">
-						<input type="text" ng-model="newComment.custInfoObj.custNum" ng-disabled="!showForm" placeholder="08822006805">
-					  </div>
-					</div>
-					<div class="form-group">
-					  <label class="col-sm-2 control-label">Comment:</label>
-					  <div class="col-sm-10">
-						<textarea ng-model="newComment.comment"></textarea>
-					  </div>
-					</div>
-					<div class="form-group">
-					  <label class="col-sm-2 control-label">Created By:</label>
-					  <div class="col-sm-10">
-						<select ng-model="newComment.createdBy" ng-options="user for user in userToLogComments"></select>
-					  </div>
-					</div>
-					<div class="form-group">
-					  <label class="col-sm-2 control-label">Assigned To:</label>
-					  <div class="col-sm-10">
-						<select ng-model="newComment.assignedTo" ng-options="user for user in userToAssignTasks"></select>
-					  </div>
-					</div>
-					<div class="form-group">
-					  <label class="col-sm-2 control-label">Status:</label>
-					  <div class="col-sm-10">
-						<select ng-model="newComment.satus" ng-options="st for st in statusAllowed"></select>
-					  </div>
-					</div>
-				</form>
-
-				<hr>
-				<button class="btn btn-success" ng-disabled="error || incomplete" ng-show="showForm" ng-click="validateForm()">
-				  <span class="glyphicon glyphicon-save"></span> Save Changes
-				</button>
-			</div>
+			
 		</div>
 		<script src="<%=request.getContextPath() %>/scripts/departmentSelectCrtl.js"></script>
     </body>

@@ -1,0 +1,9 @@
+.widthHundred {
+	width:100%;
+	padding:10px;
+}
+
+.border {
+	 border-radius: 6px;
+	 border: 2px solid #73AD21;
+}

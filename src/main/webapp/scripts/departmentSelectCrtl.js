@@ -8,7 +8,8 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 	$scope.statusAllowed = null;
 	$scope.showForm = false;
 	$scope.newComment = null;
-	$scope.getComments = function() {
+	$scope.getComments = function(dept) {
+		$scope.deptSelect = dept;
 		$http({
 		  method: 'GET',
 		  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/employee/assignedTo'
@@ -88,7 +89,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 				  header : { 'content-type':'application/json'}
 				}).then(function successCallback(response) {
 					alert("Successfully Deleted Customer "+response.data.id);
-					$scope.getComments();
+					$scope.getComments($scope.deptSelect);
 				}, function errorCallback(response) {
 					alert("Error occred while Deleted data to server " + response.header);
 				});
@@ -110,6 +111,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 					alert("phone numebr must be only number")
 				} else {
 					comment.disable = true;
+					$scope.showForm = false;
 					$http({
 					  method: 'PUT',
 					  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/comment',
@@ -177,7 +179,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 			  header : { 'content-type':'application/json'}
 			}).then(function successCallback(response) {
 				alert("Successfully Updated Customer comments "+response.data.id);
-				$scope.getComments();
+				$scope.getComments($scope.deptSelect);
 			}, function errorCallback(response) {
 				alert("Error occred while updating data to server " + response.header);
 			});
