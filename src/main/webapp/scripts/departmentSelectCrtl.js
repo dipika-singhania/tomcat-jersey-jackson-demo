@@ -12,7 +12,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 		$scope.deptSelect = dept;
 		$http({
 		  method: 'GET',
-		  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/employee/assignedTo'
+		  url: '/service/employee/assignedTo'
 		}).then(function successCallback(response) {
 			$scope.userToAssignTasks = response.data;
 		}, function errorCallback(response) {
@@ -21,7 +21,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 		
 		$http({
 		  method: 'GET',
-		  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/employee/createdBy'
+		  url: '/service/employee/createdBy'
 		}).then(function successCallback(response) {
 			$scope.userToLogComments = response.data;
 		}, function errorCallback(response) {
@@ -30,7 +30,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 		
 		$http({
 		  method: 'GET',
-		  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/employee/status'
+		  url: '/service/employee/status'
 		}).then(function successCallback(response) {
 			$scope.statusAllowed = response.data;
 		}, function errorCallback(response) {
@@ -39,7 +39,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 		
 		$http({
 		  method: 'GET',
-		  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/commentList/' +  $scope.deptSelect
+		  url: '/service/commentList/' +  $scope.deptSelect
 		}).then(function successCallback(response) {
 			$scope.commentsList = response.data;
 			angular.forEach($scope.commentsList, function(comment) {
@@ -71,7 +71,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 						comment.disable = true;
 						$http({
 						  method: 'PUT',
-						  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/comment',
+						  url: '/service/comment',
 						  data:comment,
 						  header : { 'content-type':'application/json'}
 						}).then(function successCallback(response) {
@@ -89,7 +89,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 			if(comment.id == commentId){
 				$http({
 				  method: 'DELETE',
-				  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/comment/'+commentId,
+				  url: '/service/comment/'+commentId,
 				  header : { 'content-type':'application/json'}
 				}).then(function successCallback(response) {
 					alert("Successfully Deleted Customer "+response.data.id);
@@ -118,7 +118,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 					$scope.showForm = false;
 					$http({
 					  method: 'PUT',
-					  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/comment',
+					  url: '/service/comment',
 					  data:comment,
 					  header : { 'content-type':'application/json'}
 					}).then(function successCallback(response) {
@@ -150,7 +150,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 				comment.disable = true;
 				$http({
 				  method: 'PUT',
-				  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/comment',
+				  url: '/service/comment',
 				  data:comment,
 				  header : { 'content-type':'application/json'}
 				}).then(function successCallback(response) {
@@ -178,7 +178,7 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 		else {
 			$http({
 			  method: 'POST',
-			  url: '/tomcat-jersey-jackson-demo-1.0-SNAPSHOT/service/comment',
+			  url: '/service/comment',
 			  data:$scope.newComment,
 			  header : { 'content-type':'application/json'}
 			}).then(function successCallback(response) {
