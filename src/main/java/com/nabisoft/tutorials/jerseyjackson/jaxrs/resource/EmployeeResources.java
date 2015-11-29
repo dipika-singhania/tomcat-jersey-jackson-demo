@@ -5,12 +5,9 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.nabisoft.jerseycomment.dao.CommentDao;
-import com.nabisoft.tutorials.jerseyjackson.model.Comment;
 
 @Path("/employee")
 public class EmployeeResources {

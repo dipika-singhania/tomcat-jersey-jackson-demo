@@ -116,17 +116,17 @@
 												<div class="form-group">
 												  <label class="col-sm-4 control-label">Edit</label>
 												  <div class="col-sm-8"><button class="btn" ng-click="editUser(comment.id)" ng-disabled="comment.status=='close'">
-												  <span class="glyphicon glyphicon-pencil" data-toggle="tooltip" title="edit"/></button></div>
+												  <span class="glyphicon glyphicon-pencil" data-toggle="tooltip" title="edit"></span></button></div>
 												</div>
 												<div class="form-group">
 												  <label class="col-sm-4 control-label">Save</label>
 												  <div class="col-sm-8"><button class="btn" ng-click="saveComment(comment.id)" ng-disabled="comment.disable" data-toggle="tooltip" title="save">
-													  <span class="glyphicon glyphicon-floppy-disk"/></button></div>
+													  <span class="glyphicon glyphicon-floppy-disk"></span></button></div>
 												</div>
 												<div class="form-group">
 												  <label class="col-sm-4 control-label">Delete</label>
 												  <div class="col-sm-8"><button class="btn" data-toggle="tooltip" title="delete" ng-click="onDelete(comment.id)">
-													  <span class="glyphicon glyphicon-remove-circle"></button></div>
+													  <span class="glyphicon glyphicon-remove-circle"></span></button></div>
 												</div>
 											</div>
 										</div>

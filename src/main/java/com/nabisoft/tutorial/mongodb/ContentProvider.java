@@ -3,7 +3,6 @@ package com.nabisoft.tutorial.mongodb;
 import org.bson.Document;
 
 import com.mongodb.Block;
-import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -12,7 +11,6 @@ import com.mongodb.client.model.UpdateOptions;
 import com.nabisoft.tutorials.jerseyjackson.model.Comment;
 import com.nabisoft.tutorials.jerseyjackson.model.CustomerInfo;
 import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Sorts.ascending;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,5 @@
 package com.nabisoft.jerseycomment.dao;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.nabisoft.tutorial.mongodb.ContentProvider;
 import com.nabisoft.tutorials.jerseyjackson.model.Comment;
