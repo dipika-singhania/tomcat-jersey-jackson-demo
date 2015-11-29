@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/external/bootstrap/3.2.0/css/bootstrap.min.css">
+	<script src="<%=request.getContextPath() %>/resources/external/angularjs/1.3.14/angular.min.js"></script>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -22,7 +22,7 @@
 					  <ul class="nav navbar-nav">
 						<li ng-repeat="x in depts" ng-click="getComments(x)"><a href="#">{{ x }}</a></li>
 					  </ul>
-				  </div>
+				    </div>
 				</div>
 			</nav>
 			<div class="container">

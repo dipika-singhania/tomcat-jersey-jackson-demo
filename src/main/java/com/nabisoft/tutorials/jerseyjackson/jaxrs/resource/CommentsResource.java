@@ -20,14 +20,7 @@ public class CommentsResource {
 	@Produces({MediaType.APPLICATION_JSON })
 	public List<Comment> getComments(@PathParam("department")String pDepartment) {
 	    List<Comment> departmentObjs = new ArrayList<Comment>();
-	    departmentObjs.addAll(CommentDao.instance.getModel().values());
-	    List<Comment> departmentObjsFiltered = new ArrayList<Comment>();
-	    for (Comment comment : departmentObjs) {
-	    	if(comment.getDepartment()!=null) {
-	    		if(comment.getDepartment().equalsIgnoreCase(pDepartment))
-	    			departmentObjsFiltered.add(comment);
-	    	}
-		}
-	    return departmentObjsFiltered;
+	    departmentObjs.addAll(CommentDao.instance.getModel().getByDepartment(pDepartment));
+	    return departmentObjs;
 	}
 }

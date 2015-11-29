@@ -3,13 +3,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.nabisoft.tutorial.mongodb.ContentProvider;
 import com.nabisoft.tutorials.jerseyjackson.model.Comment;
 import com.nabisoft.tutorials.jerseyjackson.model.CustomerInfo;
 
 public enum CommentDao {
 	instance;
 	  
-	  private Map<String, Comment> contentProvider = new HashMap<>();
+	  private ContentProvider contentProvider = ContentProvider.getContentProvider();
 	  
 	  private CommentDao() {
 		  
@@ -85,7 +86,7 @@ public enum CommentDao {
 		    commentObj.setCustInfoObj(co);
 		    contentProvider.put(commentObj.getId(), commentObj);
 	  }
-	  public Map<String, Comment> getModel(){
+	  public ContentProvider getModel(){
 	    return contentProvider;
 	  }
 }

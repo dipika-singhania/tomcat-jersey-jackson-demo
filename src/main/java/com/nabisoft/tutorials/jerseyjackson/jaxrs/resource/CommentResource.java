@@ -32,7 +32,8 @@ public class CommentResource {
 	  @Produces(MediaType.APPLICATION_JSON)
 	  public Comment putComment(Comment commentObj) {
 		  commentObj.getCustInfoObj().setCustNum(commentObj.getId());
-	    return putAndGetResponse(commentObj);
+		  CommentDao.instance.getModel().put(commentObj.getId(), commentObj);
+		  return commentObj;
 	  }
 	  
 	  @DELETE
@@ -55,8 +56,4 @@ public class CommentResource {
 	    return comment;
 	  }
 	  
-	  private Comment putAndGetResponse(Comment commentObj) {
-	    CommentDao.instance.getModel().put(commentObj.getId(), commentObj);
-	    return commentObj;
-	  }
 }
