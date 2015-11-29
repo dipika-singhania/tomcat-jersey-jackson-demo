@@ -12,41 +12,45 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 		$scope.deptSelect = dept;
 		$http({
 		  method: 'GET',
-		  url: '/service/employee/assignedTo'
+		  url: window.location.pathname + 'service/employee/assignedTo'
 		}).then(function successCallback(response) {
 			$scope.userToAssignTasks = response.data;
 		}, function errorCallback(response) {
-			alert("Error occred while getting assignedto`");
+			$scope.alertPresent = true;
+			$scope.alertMessage = $scope.alertMessage + "Error occred while getting assignedto. ";
 		});
 		
 		$http({
 		  method: 'GET',
-		  url: '/service/employee/createdBy'
+		  url: window.location.pathname + 'service/employee/createdBy'
 		}).then(function successCallback(response) {
 			$scope.userToLogComments = response.data;
 		}, function errorCallback(response) {
-			alert("Error occred while getting created user list");
+			$scope.alertPresent = true;
+			$scope.alertMessage = $scope.alertMessage + "Error occred while getting created user list. ";
 		});
 		
 		$http({
 		  method: 'GET',
-		  url: '/service/employee/status'
+		  url: window.location.pathname + 'service/employee/status'
 		}).then(function successCallback(response) {
 			$scope.statusAllowed = response.data;
 		}, function errorCallback(response) {
-			alert("Error occred while while getting satus list");
+			$scope.alertPresent = true;
+			$scope.alertMessage = $scope.alertMessage + "Error occured while while getting satus list. ";
 		});
 		
 		$http({
 		  method: 'GET',
-		  url: '/service/commentList/' +  $scope.deptSelect
+		  url: window.location.pathname + 'service/commentList/' +  $scope.deptSelect
 		}).then(function successCallback(response) {
 			$scope.commentsList = response.data;
 			angular.forEach($scope.commentsList, function(comment) {
 			  comment.disable = true;
 			});
 		}, function errorCallback(response) {
-			alert("Error occred while calling department list" + response.header);
+			$scope.alertPresent = true;
+			$scope.alertMessage = $scope.alertMessage + "Error occred while calling department list. ";
 		});
 		
 	};
@@ -58,26 +62,23 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 		if(status=="close") {
 			angular.forEach($scope.commentsList, function(comment) {
 				if(comment.id == commentId){
-					if(comment.department != $scope.deptSelect)
-					alert("Some error updating deparment has occured");
-					else if(comment.custInfoObj.custName == null) {
-						alert("Custumer name cannot be null");
-					} else if(comment.id.length!=11 ) {
-						alert("Phone number must be 11 digit number");
-						
-					} else if(isNaN(parseFloat(comment.id))) {
-						alert("phone numebr must be only number")
+					var checkResult = $scope.checkObject(comment,comment.id);
+					if(checkResult!="success") {
+						$scope.alertMessage = $scope.alertMessage + checkResult;
+						$scope.alertPresent = true;
 					} else {
 						comment.disable = true;
 						$http({
 						  method: 'PUT',
-						  url: '/service/comment',
+						  url: window.location.pathname + 'service/comment',
 						  data:comment,
 						  header : { 'content-type':'application/json'}
 						}).then(function successCallback(response) {
-							alert("Successfully Updated Customer "+response.data.id);
+							$scope.successPresent = true;
+							$scope.successMessage = "Successfully Updated Customer "+response.data.id;
 						}, function errorCallback(response) {
-							alert("Error occred while updating data to server " + response.header);
+							$scope.alertPresent = true;
+							$scope.alertMessage = $scope.alertMessage + "Error occred while updating data to server. ";
 						});
 					}
 				}
@@ -89,13 +90,15 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 			if(comment.id == commentId){
 				$http({
 				  method: 'DELETE',
-				  url: '/service/comment/'+commentId,
+				  url: window.location.pathname + 'service/comment/'+commentId,
 				  header : { 'content-type':'application/json'}
 				}).then(function successCallback(response) {
-					alert("Successfully Deleted Customer "+response.data.id);
+					$scope.successPresent = true;
+					$scope.successMessage = "Successfully Deleted Customer "+response.data.id;
 					$scope.getComments($scope.deptSelect);
 				}, function errorCallback(response) {
-					alert("Error occred while Deleted data to server " + response.header);
+					$scope.alertPresent = true;
+					$scope.alertMessage = $scope.alertMessage + "Error occred while Deleted data to server. ";
 				});
 			}
 		});
@@ -104,27 +107,24 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 		angular.forEach($scope.commentsList, function(comment) {
 			if(comment.id == commentId){
 				
-				if(comment.department != $scope.deptSelect)
-					alert("Some error updating deparment has occured");
-				else if(comment.custInfoObj.custName == null) {
-					alert("Custumer name cannot be null");
-				} else if(comment.id.length!=11 ) {
-					alert("Phone number must be 11 digit number");
-					
-				} else if(isNaN(parseFloat(comment.id))) {
-					alert("phone numebr must be only number")
+				var checkResult = $scope.checkObject(comment,comment.id);
+				if(checkResult!="success"){
+					$scope.alertMessage = $scope.alertMessage + checkResult;
+					$scope.alertPresent = true;
 				} else {
 					comment.disable = true;
 					$scope.showForm = false;
 					$http({
 					  method: 'PUT',
-					  url: '/service/comment',
+					  url: window.location.pathname + 'service/comment',
 					  data:comment,
 					  header : { 'content-type':'application/json'}
 					}).then(function successCallback(response) {
-						alert("Successfully Updated Customer "+response.data.id);
+						$scope.successPresent = true;
+						$scope.successMessage = "Successfully Updated Customer "+response.data.id;
 					}, function errorCallback(response) {
-						alert("Error occred while updating data to server " + response.header);
+						$scope.alertPresent = true;
+						$scope.alertMessage = $scope.alertMessage + "Error occred while updating data to server. ";
 					});
 				}
 			}
@@ -144,49 +144,89 @@ app.controller('DepartmentSelectCrtl',function($scope, $http) {
 	$scope.editUser = function(commentId) {
 		angular.forEach($scope.commentsList, function(comment) {
 			if(comment.id == commentId){
-			  if(comment.disable) {
-				comment.disable = false;
+			  var checkResult = $scope.checkObject(comment,comment.id);
+			  if(checkResult!="success"){
+				$scope.alertMessage = $scope.alertMessage + checkResult;
+				$scope.alertPresent = true;
 			  } else {
-				comment.disable = true;
-				$http({
-				  method: 'PUT',
-				  url: '/service/comment',
-				  data:comment,
-				  header : { 'content-type':'application/json'}
-				}).then(function successCallback(response) {
-					alert("Successfully Updated Customer "+response.data.id);
-				}, function errorCallback(response) {
-					alert("Error occred while updating data to server " + response.header);
-				});
+				  if(comment.disable) {
+					comment.disable = false;
+				  } else {
+					comment.disable = true;
+					$http({
+					  method: 'PUT',
+					  url: window.location.pathname + 'service/comment',
+					  data:comment,
+					  header : { 'content-type':'application/json'}
+					}).then(function successCallback(response) {
+						$scope.successPresent = true;
+						$scope.successMessage = "Successfully Updated Customer "+response.data.id;
+					}, function errorCallback(response) {
+						$scope.alertPresent = true;
+						$scope.alertMessage = $scope.alertMessage + "Error occred while updating data to server . ";
+					});
+				  }
 			  }
 			}
 		});
 	};
 	
+	$scope.checkObject = function(pComment , pCustNum ) {
+		if(pComment.department != $scope.deptSelect)
+			return "Some error updating deparment has occured";
+		if((pComment.custInfoObj.custName == null)||(pComment.custInfoObj.custName.length == 0)) {
+			return "Custumer name cannot be null";
+		}
+		var tempNum = parseFloat(pCustNum);
+		var stringTempNum = tempNum.toString();
+		if(stringTempNum.length!=10 ) {
+			return "Phone number must be 10 digit number";
+		} 
+		if(pComment.createdBy == null)
+			return "Select createdBy before submit";
+		return "success"; 
+	};
+	$scope.alertPresent = false;
+	$scope.alertMessage = "";
+	$scope.successPresent = false;
+	$scope.successMessage = "";
+	$scope.closeAlert = function() {
+		$scope.alertPresent = false;
+		$scope.alertMessage = "";
+	};
+	$scope.closeSuccess = function() {
+		$scope.successPresent = false;
+		$scope.successMessage = "";
+	};
+	$scope.expandCollapseComment = function(commentId) {
+		angular.forEach($scope.commentsList, function(comment) {
+			if(comment.id == commentId){
+				if(comment.expanded)
+					comment.expanded = false;
+				else
+					comment.expanded = true;
+			}
+		});
+	};
 	$scope.validateForm = function() {
-		if($scope.newComment.department != $scope.deptSelect)
-			alert("Some error updating deparment has occured");
-		else if($scope.newComment.custInfoObj.custName == null) {
-			alert("Custumer name cannot be null");
-		} else if($scope.newComment.custInfoObj.custNum.length!=11 ) {
-			alert("Phone number must be 11 digit number");
-			
-		} else if(isNaN(parseFloat($scope.newComment.custInfoObj.custNum))) {
-			alert("phone numebr must be only number")
-		} else if($scope.newComment.createdBy == null)
-			alert("Select createdBy before submit");
-		else {
+		var checkResult = $scope.checkObject($scope.newComment,$scope.newComment.custInfoObj.custNum);
+		if(checkResult!="success"){
+			$scope.alertMessage = $scope.alertMessage + checkResult;
+			$scope.alertPresent = true;
+		} else {
 			$http({
 			  method: 'POST',
-			  url: '/service/comment',
+			  url: window.location.pathname + 'service/comment',
 			  data:$scope.newComment,
 			  header : { 'content-type':'application/json'}
 			}).then(function successCallback(response) {
-				alert("Successfully Updated Customer comments "+response.data.id);
+				$scope.successPresent = true;
+				$scope.successMessage = "Successfully Updated Customer comments "+response.data.id;
 				$scope.getComments($scope.deptSelect);
 				$scope.showForm = false;
 			}, function errorCallback(response) {
-				alert("Error occred while updating data to server " + response.header);
+				$scope.alertPresent = true;
+				$scope.alertMessage = $scope.alertMessage + "Error occred while updating data to server.";
 			});
 			
 		}

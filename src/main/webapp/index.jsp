@@ -26,6 +26,14 @@
 				</div>
 			</nav>
 			<div class="container">
+				<div class="alert alert-success"  ng-show="successPresent">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close" ng-click="closeSuccess()">&times;</a>
+					<strong>Success!</strong> {{ successMessage }}
+				</div>
+				<div class="alert alert-danger" ng-show="alertPresent">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close" ng-click="closeAlert()">&times;</a>
+					<strong>Error!</strong> {{ alertMessage }}
+				</div>
 				<div class="col-sm-12 columns"  ng-show="deptSelect!='noDepartMentSelected'">
 					<div class="widthHundred">
 						<div class="panel panel-default widthHundred">
@@ -98,11 +106,11 @@
 												</div>
 												<div class="form-group">
 												  <label class="col-sm-4 control-label">CustNumber</label>
-												  <div class="col-sm-8"><input type="text" ng-model="comment.id" ng-disabled="comment.disable"/></div>
+												  <div class="col-sm-8"><input type="text" ng-model="comment.id" ng-disabled="true"/></div>
 												</div>
 												<div class="form-group">
 												  <label class="col-sm-4 control-label">Date</label>
-												  <div class="col-sm-8"><input type="text" ng-disabled="true" ng-model="convertDate(comment.date)"/>
+												  <div class="col-sm-8"><input type="text" ng-disabled="true" ng-value="convertDate(comment.date)"/>
 												  </div>
 												</div>
 											</div>												
@@ -147,7 +155,7 @@
 											</div>
 										</div>
 									</div>
-								  </div>
+								   </div>
 								</div>
 							</div>
 						</div>
